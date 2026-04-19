@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data/services/system_usage_provider.dart';
 import '../data/models/schedule.dart';
+import '../data/services/schedule_repository.dart';
 import '../models/app_usage.dart';
 
 /// Agent工具定义

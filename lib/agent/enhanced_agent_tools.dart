@@ -7,6 +7,7 @@ import '../data/models/focus_session.dart';
 import '../data/services/system_usage_provider.dart';
 import '../data/services/notification_service.dart';
 import '../data/models/schedule.dart';
+import '../data/services/schedule_repository.dart';
 import '../data/models/app_usage.dart';
 
 /// Agent 工具定义

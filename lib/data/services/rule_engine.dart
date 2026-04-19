@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/schedule.dart';
+import 'schedule_repository.dart';
 import 'system_usage_provider.dart';
 import 'chinese_app_database.dart';
 import 'notification_service.dart';
-// schedule_repository.dart 已移除：ScheduleRepository 在 schedule.dart 中已定义
 import 'usage_tracker.dart';
 
 /// 智能规则引擎（增强版）
