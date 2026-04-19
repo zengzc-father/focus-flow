@@ -102,7 +102,8 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
-      fontFamily: 'NotoSansSC',
+      // 使用系统默认字体（Android NotoSans CJK 原生支持中文）
+      // fontFamily: 'NotoSansSC',
     );
   }
 

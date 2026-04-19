@@ -6,7 +6,7 @@ import '../models/schedule.dart';
 import 'system_usage_provider.dart';
 import 'chinese_app_database.dart';
 import 'notification_service.dart';
-import 'schedule_repository.dart';
+// schedule_repository.dart 已移除：ScheduleRepository 在 schedule.dart 中已定义
 import 'usage_tracker.dart';
 
 /// 智能规则引擎（增强版）
@@ -442,6 +442,28 @@ class RuleEngine {
     ));
 
     debugPrint('➕ 添加规则: ${rule.name}');
+  }
+
+  /// 添加 Agent 解析的规则（V1 SmartRule → SmartRuleV2 转换）
+  Future<void> addAgentRule(SmartRule rule) async {
+    final ruleV2 = SmartRuleV2(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      name: rule.name,
+      description: rule.description,
+      conditions: RuleConditionsV2(
+        timeRange: rule.conditions.timeRange,
+        weekdays: rule.conditions.days,
+        consecutiveMinutes: rule.conditions.consecutiveMinutes,
+        totalMinutes: rule.conditions.totalMinutes,
+      ),
+      action: RuleActionV2(
+        type: RuleActionType.notification,
+        title: 'Focus 提醒',
+        message: rule.action.message,
+      ),
+      enabled: rule.enabled,
+    );
+    await addRule(ruleV2);
   }
 
   /// 删除规则
