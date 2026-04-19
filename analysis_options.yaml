@@ -1,0 +1,39 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # 代码风格
+    prefer_single_quotes: true
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    prefer_final_fields: true
+    prefer_final_locals: true
+
+    # 命名规范
+    constant_identifier_names: true
+    file_names: true
+    type_annotate_public_apis: true
+
+    # 代码质量
+    avoid_print: true
+    avoid_unnecessary_containers: true
+    avoid_redundant_argument_values: true
+    avoid_returning_null: true
+    avoid_unused_constructor_parameters: true
+
+    # Flutter 特定
+    use_build_context_synchronously: true
+    use_key_in_widget_constructors: true
+    sized_box_for_whitespace: true
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/generated_plugin_registrant.dart"
+    - "**/build/**"
+    - "**/.dart_tool/**"
+
+  language:
+    strict-casts: true
+    strict-raw-types: true
