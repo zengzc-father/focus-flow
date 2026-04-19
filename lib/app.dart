@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'presentation/screens/home/minimal_home_screen.dart';
+import 'presentation/screens/settings/settings_screen.dart';
+import 'presentation/screens/settings/model_manager_screen.dart';
 
 /// Focus Flow 应用主入口
 class FocusFlowApp extends StatelessWidget {
@@ -40,7 +42,12 @@ class FocusFlowApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const MinimalHomeScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MinimalHomeScreen(),
+        '/settings': (context) => const SettingsScreen(),
+        '/model_manager': (context) => const ModelManagerScreen(),
+      },
     );
   }
 }

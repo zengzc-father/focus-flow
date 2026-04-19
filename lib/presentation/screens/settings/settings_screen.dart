@@ -142,7 +142,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: 32),
 
-          // 测试按钮
+          // 模型管理入口
+          _buildSettingCard(
+            icon: Icons.memory,
+            title: '本地AI模型',
+            subtitle: '导入/管理Gemma 4E模型',
+            child: ListTile(
+              leading: const Icon(Icons.smart_toy, color: Colors.blue),
+              title: const Text('模型管理'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => Navigator.pushNamed(context, '/model_manager'),
+            ),
+          ),
+
+          const SizedBox(height: 32),
           Center(
             child: OutlinedButton(
               onPressed: () async {
