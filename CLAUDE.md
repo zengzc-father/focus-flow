@@ -221,3 +221,41 @@ Edit `lib/data/services/chinese_app_database.dart`:
 - Debug APK: `build/app/outputs/flutter-apk/app-debug.apk`
 - Release APK: `build/app/outputs/flutter-apk/app-release.apk`
 - App Bundle: `build/app/outputs/bundle/release/app-release.aab`
+
+## Local LLM Model Management
+
+The app supports loading a local Gemma 4E 2-bit quantized model (2.6GB) for on-device AI inference.
+
+### Model Import Flow
+
+1. **Copy model to device**: Place `gemma-4e-2bit.gguf` in `/sdcard/Download/` or `/storage/emulated/0/Download/`
+2. **Open Model Manager**: Settings → Local AI Model → Model Management
+3. **Import**: Tap "Import to App" to copy model to internal storage
+4. **Use**: The model is automatically detected and loaded by `LocalLLMService`
+
+### Key Files
+
+- `lib/data/services/local_llm_service.dart`: Core LLM inference service
+- `lib/data/services/model_manager_service.dart`: Model detection and import logic
+- `lib/presentation/screens/settings/model_manager_screen.dart`: Model management UI
+
+### Model Storage Locations
+
+| Priority | Path | Description |
+|----------|------|-------------|
+| 1 | `/data/data/com.focusflow.app/files/models/` | Internal app storage (fastest) |
+| 2 | `/sdcard/Download/` | External storage (auto-import available) |
+| 3 | `/storage/emulated/0/Download/` | Standard Android download location |
+
+### Permissions Required
+
+- `READ_EXTERNAL_STORAGE`: Scan for external model files
+- `WRITE_EXTERNAL_STORAGE`: Copy model to internal storage (Android <= 10)
+- `MANAGE_EXTERNAL_STORAGE`: Full storage access for model import (Android 11+)
+
+### Without Local Model
+
+The app works without the local model:
+- Uses rule-based Agent responses (simulated)
+- All core functionality remains available
+- Model import is optional for enhanced AI features
