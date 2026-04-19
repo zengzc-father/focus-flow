@@ -13,14 +13,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'
+          flutter-version: '3.24.0'
           channel: 'stable'
 
       - name: Create local.properties
-        run: echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+        run: echo "flutter.sdk=${FLUTTER_ROOT}" > android/local.properties
 
       - name: Get dependencies
         run: flutter pub get
@@ -31,19 +37,48 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
+      - name: List build outputs
+        run: |
+          echo "Build outputs:"
+          ls -la build/app/outputs/flutter-apk/ || echo "APK directory not found"
+          find build -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: focus-flow-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: warn
 
       - name: Upload to GitHub Releases
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && success()
         uses: softprops/action-gh-release@v1
         with:
           files: build/app/outputs/flutter-apk/app-release.apk
           tag_name: v1.0.${{ github.run_number }}
           name: Focus Flow v1.0.${{ github.run_number }}
+          body: |
+            ## Focus Flow APK v1.0.${{ github.run_number }}
+
+            自动构建的发布版本。
+
+            ### 功能特性
+            - Agent驱动的屏幕时间管理
+            - 自然语言课表导入
+            - 50+中国应用数据库
+            - 专注模式使用检测
+            - 规则自动触发
+
+            ### 模型文件导入（可选）
+            如需使用本地LLM功能：
+            1. 下载 `gemma-4e-2bit.gguf` (约2.6GB)
+            2. 复制到手机：`/sdcard/Download/gemma-4e-2bit.gguf`
+            3. 重启应用自动检测
+
+            ### 安装
+            1. 下载 `app-release.apk`
+            2. 允许安装未知来源应用
+            3. 安装并授予使用记录权限
           draft: false
           prerelease: false
         env:
