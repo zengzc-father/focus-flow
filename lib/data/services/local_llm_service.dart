@@ -5,9 +5,18 @@ import 'package:flutter/foundation.dart';
 import 'package:ffi/ffi.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'package:permission_handler/permission_handler.dart';
 
 /// 本地LLM推理服务
 /// 基于llama.cpp + Gemma 4E 2bit模型
+///
+/// 使用说明：
+/// 1. 将模型文件 gemma-4e-2bit.gguf (2.6GB) 复制到手机存储
+/// 2. 应用首次启动时会检测并导入模型
+/// 3. 模型支持路径：
+///    - /sdcard/Download/gemma-4e-2bit.gguf
+///    - /storage/emulated/0/Download/gemma-4e-2bit.gguf
+///    - 应用内部目录：/data/data/com.focusflow.app/files/models/
 class LocalLLMService {
   static final LocalLLMService _instance = LocalLLMService._internal();
   factory LocalLLMService() => _instance;
@@ -19,13 +28,98 @@ class LocalLLMService {
 
   bool _isInitialized = false;
   bool _isLoading = false;
+  String? _modelPath;
 
   // 模型配置
   static const int _contextSize = 2048;
   static const int _maxTokens = 512;
   static const double _temperature = 0.7;
+  static const String _modelFileName = 'gemma-4e-2bit.gguf';
 
-  /// 初始化模型
+  /// 检查模型是否可用
+  Future<bool> checkModelAvailable() async {
+    final modelPath = await _findModelFile();
+    return modelPath != null;
+  }
+
+  /// 获取模型导入指引
+  String getModelImportGuide() {
+    return '''模型文件导入指南：
+
+1. 准备模型文件：
+   文件名：gemma-4e-2bit.gguf
+   大小：约 2.6GB
+
+2. 复制到手机：
+   路径 A：内部存储/Download/gemma-4e-2bit.gguf
+   路径 B：/sdcard/Download/gemma-4e-2bit.gguf
+
+3. 重启应用：
+   应用会自动检测并加载模型
+
+4. 验证：
+   进入 Agent 页面，尝试对话测试
+
+注意：模型文件较大，复制可能需要几分钟。''';
+  }
+
+  /// 查找模型文件
+  /// 按优先级检查以下位置：
+  /// 1. 应用内部目录
+  /// 2. 外部存储 Download 目录
+  /// 3. SD卡 Download 目录
+  Future<String?> _findModelFile() async {
+    // 1. 检查应用内部目录
+    final appDir = await getApplicationDocumentsDirectory();
+    final internalModel = File(path.join(appDir.path, 'models', _modelFileName));
+    if (await internalModel.exists()) {
+      debugPrint('✅ 模型已存在于应用目录');
+      return internalModel.path;
+    }
+
+    // 2. 检查外部存储
+    final externalPaths = [
+      '/storage/emulated/0/Download/$_modelFileName',
+      '/sdcard/Download/$_modelFileName',
+      '/storage/sdcard0/Download/$_modelFileName',
+      '/storage/sdcard1/Download/$_modelFileName',
+    ];
+
+    for (final modelPath in externalPaths) {
+      final file = File(modelPath);
+      if (await file.exists()) {
+        debugPrint('✅ 发现外部模型: $modelPath');
+        // 可选：复制到应用目录以提高加载速度
+        // return await _copyToInternal(file);
+        return modelPath;
+      }
+    }
+
+    debugPrint('❌ 未找到模型文件');
+    return null;
+  }
+
+  /// 复制模型到应用内部目录
+  Future<String> _copyToInternal(File sourceFile) async {
+    final appDir = await getApplicationDocumentsDirectory();
+    final modelDir = Directory(path.join(appDir.path, 'models'));
+
+    if (!await modelDir.exists()) {
+      await modelDir.create(recursive: true);
+    }
+
+    final destFile = File(path.join(modelDir.path, _modelFileName));
+
+    if (await destFile.exists()) {
+      await destFile.delete();
+    }
+
+    debugPrint('📦 正在复制模型文件到应用目录...');
+    await sourceFile.copy(destFile.path);
+    debugPrint('✅ 模型复制完成');
+
+    return destFile.path;
+  }
   Future<void> initialize() async {
     if (_isInitialized || _isLoading) return;
     _isLoading = true;
@@ -63,24 +157,16 @@ class LocalLLMService {
 
   /// 准备模型文件
   Future<String> _prepareModel() async {
-    final appDir = await getApplicationDocumentsDirectory();
-    final modelDir = Directory(path.join(appDir.path, 'models'));
+    // 先查找模型
+    final modelPath = await _findModelFile();
 
-    if (!await modelDir.exists()) {
-      await modelDir.create(recursive: true);
+    if (modelPath != null) {
+      _modelPath = modelPath;
+      return modelPath;
     }
 
-    final modelFile = File(path.join(modelDir.path, 'gemma-4e-2bit.gguf'));
-
-    // 如果模型不存在，从assets复制
-    if (!await modelFile.exists()) {
-      debugPrint('📦 复制模型文件...');
-      // 实际实现需要从assets复制大文件
-      // 这里简化处理
-      throw Exception('请先将模型文件放入 ${modelFile.path}');
-    }
-
-    return modelFile.path;
+    // 模型不存在，抛出异常并提供指引
+    throw Exception('未找到模型文件 $_modelFileName\n\n${getModelImportGuide()}');
   }
 
   /// 加载模型到内存
@@ -216,7 +302,7 @@ class LocalLLMService {
   LLMStatus get status => LLMStatus(
         isInitialized: _isInitialized,
         isLoading: _isLoading,
-        modelPath: null,
+        modelPath: _modelPath,
         contextSize: _contextSize,
       );
 }

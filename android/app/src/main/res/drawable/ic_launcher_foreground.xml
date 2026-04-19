@@ -4,10 +4,35 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+
+    <!-- 番茄主体 -->
     <path
-        android:fillColor="#4A90D9"
-        android:pathData="M54,28 C38,28 28,38 28,54 C28,70 38,80 54,80 C70,80 80,70 80,54 C80,38 70,28 54,28 Z M54,72 C44,72 36,64 36,54 C36,44 44,36 54,36 C64,36 72,44 72,54 C72,64 64,72 54,72 Z"/>
+        android:fillColor="#E53935"
+        android:pathData="M54,26 C36,26 24,40 24,58 C24,76 36,86 54,86 C72,86 84,76 84,58 C84,40 72,26 54,26 Z"/>
+
+    <!-- 番茄高光 -->
     <path
-        android:fillColor="#4A90D9"
-        android:pathData="M54,40 L54,54 L64,60"/>
+        android:fillColor="#EF5350"
+        android:pathData="M42,38 C38,42 35,50 36,58 C37,52 40,44 46,40 Z"/>
+
+    <!-- 番茄叶子 -->
+    <path
+        android:fillColor="#43A047"
+        android:pathData="M54,26 C54,20 50,16 48,18 C46,20 48,24 50,26 C48,24 44,22 42,24 C40,26 44,28 48,28 L54,28 L60,28 C64,28 68,26 66,24 C64,22 60,24 58,26 C60,24 62,20 60,18 C58,16 54,20 54,26 Z"/>
+
+    <!-- 计时器刻度（12点位置短线） -->
+    <path
+        android:fillColor="#B71C1C"
+        android:pathData="M54,30 L54,34"/>
+
+    <!-- 计时器指针（指向3点方向） -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,56 L54,42 C54,41 55,40 54,40 C53,40 54,41 54,42 L54,56 L66,56 C67,56 68,55 68,56 C68,57 67,56 66,56 Z"/>
+
+    <!-- 中心圆点 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,54 C55.1,54 56,54.9 56,56 C56,57.1 55.1,58 54,58 C52.9,58 52,57.1 52,56 C52,54.9 52.9,54 54,54 Z"/>
+
 </vector>
