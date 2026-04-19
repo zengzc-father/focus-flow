@@ -1,4 +1,4 @@
-import 'time_slot_analyzer.dart';
+import '../models/app_usage.dart';
 
 /// 中国热门应用分类数据库
 ///

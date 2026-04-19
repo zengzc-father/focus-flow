@@ -26,9 +26,9 @@ class FocusAgentCore {
   bool _isInitialized = false;
 
   // 消息流控制器
-  final StreamController<AgentMessage> _messageController =
-      StreamController<AgentMessage>.broadcast();
-  Stream<AgentMessage> get messageStream => _messageController.stream;
+  final StreamController<CoreAgentMessage> _messageController =
+      StreamController<CoreAgentMessage>.broadcast();
+  Stream<CoreAgentMessage> get messageStream => _messageController.stream;
 
   // 初始化
   Future<void> initialize() async {
@@ -40,7 +40,7 @@ class FocusAgentCore {
 
     // 监听用户覆盖事件
     _overrideManager.overrideStream.listen((event) {
-      _addMessage(AgentMessage.fromAgent(AgentResponse(
+      _addMessage(CoreAgentMessage.fromAgent(AgentResponse(
         text: event.message,
         type: ResponseType.info,
       )));
@@ -925,7 +925,7 @@ class FocusAgentCore {
   }
 
   /// 添加消息到流
-  void _addMessage(AgentMessage message) {
+  void _addMessage(CoreAgentMessage message) {
     _messageController.add(message);
   }
 }
@@ -984,7 +984,7 @@ class AgentResponse {
   });
 }
 
-class AgentMessage {
+class CoreAgentMessage {
   final String id;
   final String text;
   final bool isFromAgent;
@@ -992,7 +992,7 @@ class AgentMessage {
   final ResponseType? type;
   final Map<String, dynamic>? data;
 
-  AgentMessage({
+  CoreAgentMessage({
     required this.id,
     required this.text,
     required this.isFromAgent,
@@ -1001,7 +1001,7 @@ class AgentMessage {
     this.data,
   });
 
-  factory AgentMessage.fromAgent(AgentResponse response) => AgentMessage(
+  factory CoreAgentMessage.fromAgent(AgentResponse response) => CoreAgentMessage(
     id: DateTime.now().millisecondsSinceEpoch.toString(),
     text: response.text,
     isFromAgent: true,
@@ -1010,7 +1010,7 @@ class AgentMessage {
     data: response.data,
   );
 
-  factory AgentMessage.fromUser(String text) => AgentMessage(
+  factory CoreAgentMessage.fromUser(String text) => CoreAgentMessage(
     id: DateTime.now().millisecondsSinceEpoch.toString(),
     text: text,
     isFromAgent: false,

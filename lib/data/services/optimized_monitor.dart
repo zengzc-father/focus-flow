@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import '../models/schedule.dart';
+import '../models/app_usage.dart';
 import 'system_usage_provider.dart';
 import 'schedule_repository.dart';
 import 'time_slot_analyzer.dart';
 import 'chinese_app_database.dart';
+import 'context_aware_monitor.dart';
 
 /// 统一监控配置
 class MonitorConfig {
@@ -258,7 +260,7 @@ class UnifiedMonitor {
     // 如果阈值为0，表示完全禁止
     if (threshold == 0) {
       return InterventionSuggestion(
-        level: InterventionLevel.strong,
+        level: ContextInterventionLevel.strong,
         message: '现在不是用${AppIntentClassifier.getIntentName(intent)}的时候哦~',
         eventName: event.name,
         appName: ChineseAppDatabase.getAppName(appPackage),
@@ -271,7 +273,7 @@ class UnifiedMonitor {
 
     if (ratio >= 2.0) {
       return InterventionSuggestion(
-        level: InterventionLevel.strong,
+        level: ContextInterventionLevel.strong,
         message: '${event.name}时间已用${currentMinutes}分钟${_getIntentDisplay(intent)}，'
                   '有点久了，现在放下，等结束再玩吧！',
         eventName: event.name,
@@ -280,7 +282,7 @@ class UnifiedMonitor {
       );
     } else if (ratio >= 1.0) {
       return InterventionSuggestion(
-        level: InterventionLevel.gentle,
+        level: ContextInterventionLevel.gentle,
         message: _getGentleMessage(event.name, intent, currentMinutes, event.type),
         eventName: event.name,
         appName: ChineseAppDatabase.getAppName(appPackage),
@@ -355,7 +357,7 @@ class UnifiedMonitor {
 
 /// 干预建议
 class InterventionSuggestion {
-  final InterventionLevel level;
+  final ContextInterventionLevel level;
   final String message;
   final String eventName;
   final String appName;
@@ -368,10 +370,4 @@ class InterventionSuggestion {
     required this.appName,
     required this.usageMinutes,
   });
-}
-
-/// 干预级别
-enum InterventionLevel {
-  gentle,
-  strong,
 }

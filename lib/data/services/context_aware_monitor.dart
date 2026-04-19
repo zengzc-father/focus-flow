@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import '../models/schedule.dart';
+import '../models/app_usage.dart';
 import 'system_usage_provider.dart';
 import 'schedule_repository.dart';
 import 'time_slot_analyzer.dart';
@@ -190,7 +191,7 @@ class ContextAwareMonitor {
     if (threshold == 0) {
       return InterventionDecision(
         shouldIntervene: true,
-        level: InterventionLevel.strong,
+        level: ContextInterventionLevel.strong,
         reason: '${event.name}期间不适合使用${AppIntentClassifier.getIntentName(intent)}',
         suggestion: '现在不是用${AppIntentClassifier.getIntentName(intent)}的时候哦~',
       );
@@ -263,7 +264,7 @@ class ContextAwareMonitor {
       // 超过2倍阈值
       return InterventionDecision(
         shouldIntervene: true,
-        level: InterventionLevel.strong,
+        level: ContextInterventionLevel.strong,
         reason: '$intentName已使用$usageMinutes分钟，严重超标',
         suggestion: '${event.name}时间已用$usageMinutes分钟$intentName，'
                     '有点久了，现在放下，等${event.name}结束再玩吧！',
@@ -272,7 +273,7 @@ class ContextAwareMonitor {
       // 超过1.5倍
       return InterventionDecision(
         shouldIntervene: true,
-        level: InterventionLevel.moderate,
+        level: ContextInterventionLevel.moderate,
         reason: '$intentName持续使用中',
         suggestion: '已经$intentName${usageMinutes}分钟了，${event.name}还在进行吗？',
       );
@@ -280,7 +281,7 @@ class ContextAwareMonitor {
       // 首次超过
       return InterventionDecision(
         shouldIntervene: true,
-        level: InterventionLevel.gentle,
+        level: ContextInterventionLevel.gentle,
         reason: '$intentName达到阈值',
         suggestion: _getGentleMessage(event.name, intentName, usageMinutes, event.type),
       );
@@ -356,7 +357,6 @@ class TimeSlotUsageRecord {
   final DateTime startTime;
   DateTime? endTime;
 
-  // 应用使用记录 {packageName: {intent, minutes}}
   final Map<String, AppUsageDetail> appUsage;
 
   TimeSlotUsageRecord({
@@ -406,7 +406,6 @@ class TimeSlotUsageRecord {
   double calculateFocusScore() {
     if (elapsedMinutes == 0) return 100;
 
-    // 根据活动类型计算
     final policy = ContextualAppPolicy.getPolicy(eventType);
 
     double score = 100;
@@ -414,9 +413,8 @@ class TimeSlotUsageRecord {
     for (var usage in appUsage.values) {
       final threshold = policy[usage.intent] ?? 10;
       if (threshold > 0) {
-        // 使用时长相对于阈值的惩罚
         final ratio = usage.minutes / threshold;
-        score -= ratio * 10; // 每个阈值单位扣10分
+        score -= ratio * 10;
       }
     }
 
@@ -440,7 +438,7 @@ class AppUsageDetail {
 /// 干预决策
 class InterventionDecision {
   final bool shouldIntervene;
-  final InterventionLevel level;
+  final ContextInterventionLevel level;
   final String reason;
   final String suggestion;
 
@@ -452,8 +450,8 @@ class InterventionDecision {
   });
 }
 
-/// 干预级别
-enum InterventionLevel {
+/// 干预级别（context_aware_monitor 专用）
+enum ContextInterventionLevel {
   none,
   gentle,
   moderate,

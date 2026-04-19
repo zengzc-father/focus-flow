@@ -220,8 +220,7 @@ class LlamaCppEngine implements LLMEngine {
     _config = null;
 
     // 触发垃圾回收
-    // ignore: unnecessary_statements
-    TimelineTask;
+    debugPrint('GC triggered after model unload');
 
     debugPrint('✅ 模型已卸载');
   }

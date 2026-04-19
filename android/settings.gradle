@@ -14,11 +14,7 @@ pluginManagement {
         if (envSdk != null) {
             return envSdk
         }
-        // 回退：尝试常见路径
-        def f = new File("/opt/hostedtoolcache/flutter/stable-3.22.0-x64")
-        if (f.exists()) {
-            return f.absolutePath
-        }
+        // 如果以上都不行，报错
         throw new GradleException("Flutter SDK not found. Set flutter.sdk in local.properties or FLUTTER_ROOT env var.")
     }()
 

@@ -1,19 +1,10 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import '../models/schedule.dart';
+import '../models/app_usage.dart';
 import 'schedule_repository.dart';
 import 'system_usage_provider.dart';
-import '../models/schedule.dart';
 import 'chinese_app_database.dart';
-
-/// 应用使用意图分类
-enum UsageIntent {
-  tool,           // 工具使用（计算器、相机等）
-  communication,  // 通讯（微信、钉钉消息）
-  entertainment,  // 娱乐（抖音、游戏）
-  study,          // 学习（学习类App）
-  music,          // 音乐（健身时合理）
-  unknown,        // 未知
-}
 
 /// 应用意图分类器
 class AppIntentClassifier {
@@ -118,6 +109,12 @@ class AppIntentClassifier {
         return '听音乐';
       case UsageIntent.unknown:
         return '其他使用';
+      case UsageIntent.news:
+        return '看新闻';
+      case UsageIntent.shopping:
+        return '购物';
+      case UsageIntent.other:
+        return '其他';
     }
   }
 }

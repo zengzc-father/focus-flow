@@ -126,6 +126,11 @@ class RuleEngine {
     }
   }
 
+  /// 公开的评估方法（供后台服务调用）
+  Future<void> evaluateRules() async {
+    await _evaluateRules();
+  }
+
   /// 判断增强规则是否应该触发
   Future<bool> _shouldTriggerEnhanced(SmartRuleV2 rule, DateTime now) async {
     final cond = rule.conditions;
@@ -688,12 +693,12 @@ class RuleAction {
       };
 }
 
-/// 通知动作
-class NotificationAction {
+/// 通知动作回调
+class ActionCallback {
   final String title;
   final VoidCallback callback;
 
-  NotificationAction({
+  ActionCallback({
     required this.title,
     required this.callback,
   });

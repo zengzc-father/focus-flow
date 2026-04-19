@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'rule_engine.dart';
 
 /// 事件驱动的使用追踪器（优化版）
 ///
@@ -223,7 +224,7 @@ class UsageTracker extends ChangeNotifier {
       return '今日使用已超限额，且连续使用较久，建议立即休息';
     }
     if (dailyExceeded) {
-      return '今日使用已超$dailyLimitMinutes分钟，注意休息';
+      return '今日使用已超限，注意休息';
     }
     return '已连续使用$currentSessionMinutes分钟，起来活动一下吧';
   }
@@ -331,13 +332,8 @@ class ReminderDecision {
   );
 }
 
-/// 提醒强度
-enum ReminderLevel {
-  subtle,      // 静默通知栏更新
-  normal,      // 标准通知
-  strong,      // 弹窗+声音
-  intervention,// 全屏覆盖
-}
+/// 提醒强度 - 使用 rule_engine.dart 中的定义
+// ReminderLevel 已在 rule_engine.dart 中统一定义
 
 /// 智能提醒时机检测
 class SmartReminder {

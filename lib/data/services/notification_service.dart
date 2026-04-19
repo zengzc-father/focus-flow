@@ -1,6 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_flow/data/services/rule_engine.dart';
-import 'package:focus_flow/data/services/notification_action_handler.dart';
 
 /// 优化的通知服务
 /// 支持渐进式提醒和交互按钮
@@ -110,16 +109,16 @@ class NotificationService {
   Future<void> showNotification({
     required String title,
     required String body,
-    List<NotificationAction>? actions,
+    List<String>? actionLabels,
   }) async {
     final androidActions = <AndroidNotificationAction>[];
 
-    if (actions != null) {
-      for (var i = 0; i < actions.length; i++) {
+    if (actionLabels != null) {
+      for (var i = 0; i < actionLabels.length; i++) {
         androidActions.add(
           AndroidNotificationAction(
             'action_$i',
-            actions[i].title,
+            actionLabels[i],
           ),
         );
       }
@@ -141,7 +140,7 @@ class NotificationService {
       title,
       body,
       details,
-      payload: actions?.map((a) => a.title).join(','),
+      payload: actionLabels?.join(','),
     );
   }
 
@@ -301,13 +300,8 @@ enum NotificationImportance {
   high,
 }
 
-/// 提醒级别（渐进式干预）
-enum ReminderLevel {
-  subtle, // L1: 轻微提示（静默通知栏）
-  normal, // L2: 温和打断（弹窗+声音）
-  strong, // L3: 强力提醒（全屏覆盖）
-  intervention, // L4: 强制干预（配合锁屏）
-}
+/// 提醒级别（渐进式干预）- 使用 rule_engine.dart 中的定义
+// ReminderLevel 已在 rule_engine.dart 中统一定义
 
 /// 通知调度器 - 防止通知疲劳
 class NotificationScheduler {

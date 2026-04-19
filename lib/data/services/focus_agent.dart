@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'rule_engine.dart' show SmartRule, RuleConditions, RuleAction;
 
 /// Focus Agent Pro - 专业屏幕时间自律助手
 ///
@@ -26,10 +27,10 @@ class FocusAgent {
   late UserProfile _profile;
 
   /// 当前状态
-  AgentState get state {
-    if (_isLoading) return AgentState.loading;
-    if (_isLoaded) return AgentState.ready;
-    return AgentState.unloaded;
+  FocusAgentStatus get state {
+    if (_isLoading) return FocusAgentStatus.loading;
+    if (_isLoaded) return FocusAgentStatus.ready;
+    return FocusAgentStatus.unloaded;
   }
 
   /// 加载Agent
@@ -644,7 +645,7 @@ class FocusAgent {
 
 /// ==================== 数据模型 ====================
 
-enum AgentState { unloaded, loading, ready }
+enum FocusAgentStatus { unloaded, loading, ready }
 
 abstract class LocalLLMInterface {
   Future<String> generate(String prompt);
@@ -832,78 +833,4 @@ class WeeklyAnalysis {
       );
 }
 
-/// 智能规则
-class SmartRule {
-  final String name;
-  final String description;
-  final RuleConditions conditions;
-  final RuleAction action;
-  final bool enabled;
 
-  SmartRule({
-    required this.name,
-    required this.description,
-    required this.conditions,
-    required this.action,
-    this.enabled = true,
-  });
-
-  factory SmartRule.fromJson(Map<String, dynamic> json) => SmartRule(
-        name: json['name'] ?? '',
-        description: json['description'] ?? '',
-        conditions: RuleConditions.fromJson(json['conditions'] ?? {}),
-        action: RuleAction.fromJson(json['action'] ?? {}),
-        enabled: json['enabled'] ?? true,
-      );
-
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'description': description,
-        'conditions': conditions.toJson(),
-        'action': action.toJson(),
-        'enabled': enabled,
-      };
-}
-
-class RuleConditions {
-  final String? timeRange;
-  final int? consecutiveMinutes;
-  final int? totalMinutes;
-  final List<int>? days;
-
-  RuleConditions({this.timeRange, this.consecutiveMinutes, this.totalMinutes, this.days});
-
-  factory RuleConditions.fromJson(Map<String, dynamic> json) => RuleConditions(
-        timeRange: json['timeRange'],
-        consecutiveMinutes: json['consecutiveMinutes'],
-        totalMinutes: json['totalMinutes'],
-        days: (json['days'] as List?)?.cast<int>(),
-      );
-
-  Map<String, dynamic> toJson() => {
-        'timeRange': timeRange,
-        'consecutiveMinutes': consecutiveMinutes,
-        'totalMinutes': totalMinutes,
-        'days': days,
-      };
-}
-
-class RuleAction {
-  final String type;
-  final String? title;
-  final String? message;
-
-  RuleAction({required this.type, this.title, this.message});
-
-  factory RuleAction.fromJson(Map<String, dynamic> json) => RuleAction(
-        type: json['type'] ?? 'notify',
-        title: json['title'],
-        message: json['message'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        'type': type,
-        'title': title,
-        'message': message,
-      };
-}

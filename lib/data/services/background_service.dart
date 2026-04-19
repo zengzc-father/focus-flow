@@ -85,7 +85,7 @@ Future<void> _handleDailyReport() async {
 Future<void> _handleRuleEngine() async {
   final ruleEngine = RuleEngine();
   await ruleEngine.initialize();
-  await ruleEngine._evaluateRules();
+  await ruleEngine.evaluateRules();
 }
 
 class BackgroundService {

@@ -75,6 +75,7 @@ enum UsageIntent {
   news,           // 新闻
   shopping,       // 购物
   other,          // 其他
+  unknown,        // 未知
 }
 
 extension UsageIntentExtension on UsageIntent {
@@ -96,6 +97,8 @@ extension UsageIntentExtension on UsageIntent {
         return '购物';
       case UsageIntent.other:
         return '其他';
+      case UsageIntent.unknown:
+        return '未知';
     }
   }
 

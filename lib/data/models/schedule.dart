@@ -56,9 +56,9 @@ class DeviceUsagePolicy {
 
   // 宽松模式（休息时间）
   factory DeviceUsagePolicy.relaxedMode() => DeviceUsagePolicy(
-    allowToolUsage = true,
-    entertainmentLimitMinutes = 30,
-    requireCheckIn = false,
+    allowToolUsage: true,
+    entertainmentLimitMinutes: 30,
+    requireCheckIn: false,
   );
 
   Map<String, dynamic> toJson() => {

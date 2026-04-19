@@ -10,8 +10,8 @@ import '../data/models/schedule.dart';
 import '../data/services/schedule_repository.dart';
 import '../data/models/app_usage.dart';
 
-/// Agent 工具定义
-class AgentTool {
+/// 增强版 Agent 工具定义
+class EnhancedAgentTool {
   final String name;
   final String description;
   final Map<String, dynamic> parameters;
@@ -19,7 +19,7 @@ class AgentTool {
   final bool requiresConfirmation;
   final String? confirmationMessage;
 
-  AgentTool({
+  EnhancedAgentTool({
     required this.name,
     required this.description,
     required this.parameters,
@@ -43,7 +43,7 @@ class EnhancedAgentToolExecutor {
   factory EnhancedAgentToolExecutor() => _instance;
   EnhancedAgentToolExecutor._internal();
 
-  final Map<String, AgentTool> _tools = {};
+  final Map<String, EnhancedAgentTool> _tools = {};
   final SystemUsageProvider _usageProvider = SystemUsageProvider();
   final FocusModeManager _focusManager = FocusModeManager();
   final EnhancedNotificationService _notificationService = EnhancedNotificationService();
@@ -104,7 +104,7 @@ class EnhancedAgentToolExecutor {
 
   void _registerDataTools() {
     // 获取今日使用统计
-    _tools['get_today_usage'] = AgentTool(
+    _tools['get_today_usage'] = EnhancedAgentTool(
       name: 'get_today_usage',
       description: '获取今日屏幕使用统计，包括总时长、解锁次数和各应用详情',
       parameters: {
@@ -150,7 +150,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 获取实时使用状态
-    _tools['get_realtime_status'] = AgentTool(
+    _tools['get_realtime_status'] = EnhancedAgentTool(
       name: 'get_realtime_status',
       description: '获取当前实时的手机使用状态',
       parameters: {'type': 'object', 'properties': {}},
@@ -172,7 +172,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 获取本周趋势
-    _tools['get_weekly_trend'] = AgentTool(
+    _tools['get_weekly_trend'] = EnhancedAgentTool(
       name: 'get_weekly_trend',
       description: '获取最近7天的使用趋势数据',
       parameters: {
@@ -219,7 +219,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 获取特定应用详细使用
-    _tools['get_app_usage_details'] = AgentTool(
+    _tools['get_app_usage_details'] = EnhancedAgentTool(
       name: 'get_app_usage_details',
       description: '获取指定应用的详细使用数据',
       parameters: {
@@ -264,7 +264,7 @@ class EnhancedAgentToolExecutor {
 
   void _registerFocusTools() {
     // 启动专注模式
-    _tools['start_focus_mode'] = AgentTool(
+    _tools['start_focus_mode'] = EnhancedAgentTool(
       name: 'start_focus_mode',
       description: '启动专注模式（番茄钟）',
       parameters: {
@@ -308,7 +308,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 停止专注模式
-    _tools['stop_focus_mode'] = AgentTool(
+    _tools['stop_focus_mode'] = EnhancedAgentTool(
       name: 'stop_focus_mode',
       description: '停止当前专注模式',
       parameters: {
@@ -349,7 +349,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 获取专注状态
-    _tools['get_focus_status'] = AgentTool(
+    _tools['get_focus_status'] = EnhancedAgentTool(
       name: 'get_focus_status',
       description: '获取当前专注模式状态',
       parameters: {'type': 'object', 'properties': {}},
@@ -378,7 +378,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 获取专注历史
-    _tools['get_focus_history'] = AgentTool(
+    _tools['get_focus_history'] = EnhancedAgentTool(
       name: 'get_focus_history',
       description: '获取专注历史记录',
       parameters: {
@@ -421,7 +421,7 @@ class EnhancedAgentToolExecutor {
 
   void _registerNotificationTools() {
     // 发送提醒
-    _tools['send_notification'] = AgentTool(
+    _tools['send_notification'] = EnhancedAgentTool(
       name: 'send_notification',
       description: '向用户发送通知',
       parameters: {
@@ -462,7 +462,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 发送护眼提醒
-    _tools['send_eye_rest_reminder'] = AgentTool(
+    _tools['send_eye_rest_reminder'] = EnhancedAgentTool(
       name: 'send_eye_rest_reminder',
       description: '发送20-20-20护眼提醒',
       parameters: {'type': 'object', 'properties': {}},
@@ -473,7 +473,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 发送连续使用提醒
-    _tools['send_continuous_use_reminder'] = AgentTool(
+    _tools['send_continuous_use_reminder'] = EnhancedAgentTool(
       name: 'send_continuous_use_reminder',
       description: '发送连续使用提醒',
       parameters: {
@@ -509,7 +509,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 发送替代活动建议
-    _tools['send_activity_suggestion'] = AgentTool(
+    _tools['send_activity_suggestion'] = EnhancedAgentTool(
       name: 'send_activity_suggestion',
       description: '发送替代活动建议',
       parameters: {
@@ -544,7 +544,7 @@ class EnhancedAgentToolExecutor {
 
   void _registerRuleTools() {
     // 创建智能规则
-    _tools['create_smart_rule'] = AgentTool(
+    _tools['create_smart_rule'] = EnhancedAgentTool(
       name: 'create_smart_rule',
       description: '创建智能提醒规则',
       parameters: {
@@ -596,7 +596,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 获取所有规则
-    _tools['get_all_rules'] = AgentTool(
+    _tools['get_all_rules'] = EnhancedAgentTool(
       name: 'get_all_rules',
       description: '获取所有规则',
       parameters: {
@@ -623,7 +623,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 切换规则状态
-    _tools['toggle_rule'] = AgentTool(
+    _tools['toggle_rule'] = EnhancedAgentTool(
       name: 'toggle_rule',
       description: '启用或禁用规则',
       parameters: {
@@ -661,7 +661,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 删除规则
-    _tools['delete_rule'] = AgentTool(
+    _tools['delete_rule'] = EnhancedAgentTool(
       name: 'delete_rule',
       description: '删除规则',
       parameters: {
@@ -697,7 +697,7 @@ class EnhancedAgentToolExecutor {
 
   void _registerScheduleTools() {
     // 添加日程
-    _tools['add_schedule_event'] = AgentTool(
+    _tools['add_schedule_event'] = EnhancedAgentTool(
       name: 'add_schedule_event',
       description: '添加日程/课程',
       parameters: {
@@ -767,7 +767,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 获取今日日程
-    _tools['get_today_schedule'] = AgentTool(
+    _tools['get_today_schedule'] = EnhancedAgentTool(
       name: 'get_today_schedule',
       description: '获取今日日程',
       parameters: {'type': 'object', 'properties': {}},
@@ -791,7 +791,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 获取当前上下文
-    _tools['get_current_context'] = AgentTool(
+    _tools['get_current_context'] = EnhancedAgentTool(
       name: 'get_current_context',
       description: '获取当前日程上下文',
       parameters: {'type': 'object', 'properties': {}},
@@ -813,7 +813,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 分析日程时段使用
-    _tools['analyze_schedule_slot'] = AgentTool(
+    _tools['analyze_schedule_slot'] = EnhancedAgentTool(
       name: 'analyze_schedule_slot',
       description: '分析特定日程时段的手机使用',
       parameters: {
@@ -857,7 +857,7 @@ class EnhancedAgentToolExecutor {
 
   void _registerAnalysisTools() {
     // 分析使用模式
-    _tools['analyze_usage_pattern'] = AgentTool(
+    _tools['analyze_usage_pattern'] = EnhancedAgentTool(
       name: 'analyze_usage_pattern',
       description: '深度分析使用模式',
       parameters: {
@@ -911,7 +911,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 生成建议
-    _tools['generate_suggestions'] = AgentTool(
+    _tools['generate_suggestions'] = EnhancedAgentTool(
       name: 'generate_suggestions',
       description: '基于使用数据生成个性化建议',
       parameters: {
@@ -968,7 +968,7 @@ class EnhancedAgentToolExecutor {
 
   void _registerSystemTools() {
     // 获取应用信息
-    _tools['get_app_info'] = AgentTool(
+    _tools['get_app_info'] = EnhancedAgentTool(
       name: 'get_app_info',
       description: '获取已安装应用信息',
       parameters: {
@@ -1005,7 +1005,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 更新设置
-    _tools['update_settings'] = AgentTool(
+    _tools['update_settings'] = EnhancedAgentTool(
       name: 'update_settings',
       description: '更新应用设置',
       parameters: {
@@ -1034,7 +1034,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 获取设置
-    _tools['get_settings'] = AgentTool(
+    _tools['get_settings'] = EnhancedAgentTool(
       name: 'get_settings',
       description: '获取应用设置',
       parameters: {
@@ -1074,7 +1074,7 @@ class EnhancedAgentToolExecutor {
 
   void _registerActionTools() {
     // 更新每日目标
-    _tools['update_daily_goal'] = AgentTool(
+    _tools['update_daily_goal'] = EnhancedAgentTool(
       name: 'update_daily_goal',
       description: '更新每日使用目标',
       parameters: {
@@ -1101,7 +1101,7 @@ class EnhancedAgentToolExecutor {
     );
 
     // 获取每日目标
-    _tools['get_daily_goal'] = AgentTool(
+    _tools['get_daily_goal'] = EnhancedAgentTool(
       name: 'get_daily_goal',
       description: '获取每日使用目标',
       parameters: {'type': 'object', 'properties': {}},

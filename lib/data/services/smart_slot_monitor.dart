@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import '../models/schedule.dart';
+import '../models/app_usage.dart';
 import 'system_usage_provider.dart';
 import 'schedule_repository.dart';
+import 'time_slot_analyzer.dart';
 
 /// 应用分类与阈值配置
 class AppCategoryConfig {
