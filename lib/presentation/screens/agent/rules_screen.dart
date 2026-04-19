@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus_flow/core/theme/app_theme.dart';
-import 'package:focus_flow/data/services/focus_agent.dart';
+import 'package:focus_flow/data/services/rule_engine.dart';
 
 /// 规则管理页面
 /// 展示和管理Agent生成的智能规则

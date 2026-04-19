@@ -6,6 +6,8 @@ import 'system_usage_provider.dart';
 import 'chinese_app_database.dart';
 import 'notification_service.dart';
 import 'schedule_repository.dart';
+import '../models/app_usage.dart' show UsageIntent;
+import 'context_aware_monitor.dart' show ContextualAppPolicy;
 
 /// 专注模式使用检测服务
 ///

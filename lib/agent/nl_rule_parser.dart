@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import '../data/services/chinese_app_database.dart';
 import '../data/services/rule_engine.dart';
+import '../data/models/app_usage.dart' show UsageIntent;
 
 /// 自然语言规则解析器（增强版）
 ///

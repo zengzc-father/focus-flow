@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../data/services/model_manager_service.dart';
+import '../../../data/services/model_manager_service.dart';
 
 /// 模型管理页面
 /// 用于导入、删除和管理本地LLM模型

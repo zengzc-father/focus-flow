@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../data/services/system_usage_provider.dart';
-import 'notification_service.dart';
+import '../data/services/notification_service.dart';
 
 /// 专注模式打断检测器
 ///

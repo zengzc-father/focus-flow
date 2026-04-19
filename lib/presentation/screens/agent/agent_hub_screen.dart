@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:focus_flow/core/theme/app_theme.dart';
 import 'package:focus_flow/data/services/focus_agent.dart';
+import 'package:focus_flow/data/services/rule_engine.dart';
 
 /// Agent页面（按需加载）
 class AgentHubScreen extends StatefulWidget {

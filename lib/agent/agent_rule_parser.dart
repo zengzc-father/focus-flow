@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'rule_engine.dart';
+import '../data/services/rule_engine.dart';
 
 /// Agent规则自然语言解析器
 /// 将用户自然语言输入的规则解析为结构化的SmartRule

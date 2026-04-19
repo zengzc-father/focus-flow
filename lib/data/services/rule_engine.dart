@@ -8,6 +8,7 @@ import 'system_usage_provider.dart';
 import 'chinese_app_database.dart';
 import 'notification_service.dart';
 import 'usage_tracker.dart';
+import '../models/app_usage.dart' show UsageIntent;
 
 /// 智能规则引擎（增强版）
 ///

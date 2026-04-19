@@ -9,6 +9,7 @@ import '../data/services/notification_service.dart';
 import '../data/models/schedule.dart';
 import '../data/services/schedule_repository.dart';
 import '../data/models/app_usage.dart';
+import '../data/services/rule_engine.dart' show ReminderLevel;
 
 /// 增强版 Agent 工具定义
 class EnhancedAgentTool {

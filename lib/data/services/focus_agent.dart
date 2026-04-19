@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'rule_engine.dart' show SmartRule, RuleConditions, RuleAction;
+import '../models/app_usage.dart' show DailyUsage, WeeklyAnalysis;
 
 /// Focus Agent Pro - 专业屏幕时间自律助手
 ///

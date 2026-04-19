@@ -5,6 +5,8 @@ import '../data/services/schedule_repository.dart';
 import '../data/services/system_usage_provider.dart';
 import '../data/services/context_aware_monitor.dart';
 import 'agent_tools.dart';
+import '../data/models/app_usage.dart' show UsageIntent;
+import '../data/services/time_slot_analyzer.dart' show AppIntentClassifier;
 
 /// 用户意图覆盖系统
 ///

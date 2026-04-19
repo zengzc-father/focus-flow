@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../agent/enhanced_focus_agent.dart' as agent;
-import '../../data/services/system_usage_provider.dart';
-import '../../data/models/app_usage.dart';
-import '../../data/services/schedule_repository.dart';
-import '../../data/models/schedule.dart';
+import '../../../agent/enhanced_focus_agent.dart' as agent;
+import '../../../data/services/system_usage_provider.dart';
+import '../../../data/models/app_usage.dart';
+import '../../../data/services/schedule_repository.dart';
+import '../../../data/models/schedule.dart';
 import '../focus/focus_mode_screen.dart';
 import '../schedule/schedule_edit_screen.dart';
 import '../settings/settings_screen.dart';
